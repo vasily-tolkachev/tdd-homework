@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -155,5 +157,13 @@ public class RangeTest {
     @DisplayName("method contains with not containing value")
     void contains_NotContainingValue_False() {
         assertThat(testingRange.contains(30), is(false));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"-10, 15, true", "15, 100, true", "-100, 100, true", "12, 18, true", "-100, -50, false", "50, 100, false"})
+    @DisplayName("check if isConcurrent works with different ranges")
+    void isConcurrent_DifferentRanges(long lowerBound, long upperBound, boolean expectedResult) {
+        Range anotherRange = new Range(lowerBound, upperBound);
+        assertThat(testingRange.isConcurrent(anotherRange), is(expectedResult));
     }
 }

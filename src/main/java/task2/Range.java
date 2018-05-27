@@ -7,7 +7,7 @@ public class Range implements IRange {
     private long lowerBound;
     private long upperBound;
 
-    public Range(int lowerBound, int upperBound) {
+    public Range(long lowerBound, long upperBound) {
         if (lowerBound > upperBound) {
             this.lowerBound = upperBound;
             this.upperBound = lowerBound;
@@ -21,9 +21,7 @@ public class Range implements IRange {
         return lowerBound;
     }
 
-    public long getUpperBound() {
-        return upperBound;
-    }
+    public long getUpperBound() { return upperBound; }
 
     public boolean isBefore(Range otherRange) {
         if (otherRange == null) throw new IllegalArgumentException();
@@ -36,11 +34,12 @@ public class Range implements IRange {
     }
 
     public boolean isConcurrent(Range otherRange) {
-        return false;
+        if (otherRange == null) throw new IllegalArgumentException();
+        return this.lowerBound <= otherRange.upperBound && this.upperBound >= otherRange.lowerBound;
     }
 
     public boolean contains(long value) {
-        return false;
+        return value >= lowerBound && value <= upperBound;
     }
 
     public List<Long> asList() {
