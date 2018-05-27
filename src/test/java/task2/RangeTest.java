@@ -75,4 +75,10 @@ public class RangeTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> range.isBefore(null));
     }
 
+    @Test
+    @DisplayName("isBefore with one by one range")
+    void isBefore_OneSameBound_True() {
+        Range lowerRange = new Range(5,10 );
+        assertThat(lowerRange.isBefore(range), is(true));
+    }
 }

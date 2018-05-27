@@ -4,8 +4,25 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Range implements IRange {
+    private long lowerBound;
+    private long upperBound;
+
+    public Range(int lowerBound, int upperBound) {
+        this.lowerBound = lowerBound;
+        this.upperBound = upperBound;
+    }
+
+    public long getLowerBound() {
+        return lowerBound;
+    }
+
+    public long getUpperBound() {
+        return upperBound;
+    }
+
     public boolean isBefore(Range otherRange) {
-        return false;
+        if (otherRange == null) throw new IllegalArgumentException();
+        return  upperBound <= otherRange.getLowerBound();
     }
 
     public boolean isAfter(Range otherRange) {
@@ -14,14 +31,6 @@ public class Range implements IRange {
 
     public boolean isConcurrent(Range otherRange) {
         return false;
-    }
-
-    public long getLowerBound() {
-        return 0;
-    }
-
-    public long getUpperBound() {
-        return 0;
     }
 
     public boolean contains(long value) {
