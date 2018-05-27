@@ -26,7 +26,8 @@ public class Range implements IRange {
     }
 
     public boolean isAfter(Range otherRange) {
-        return false;
+        if (otherRange == null) throw new IllegalArgumentException();
+        return lowerBound >= otherRange.getUpperBound();
     }
 
     public boolean isConcurrent(Range otherRange) {
