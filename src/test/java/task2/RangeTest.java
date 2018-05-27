@@ -16,8 +16,7 @@ public class RangeTest {
     public static void init() {
         testingRange = new Range(10, 20);
     }
-    //exception for constructor if first parameter more than last
-    //check for negative range
+
     @Test
     @DisplayName("isBefore with lower range")
     void isBefore_LowerRange_False() {
@@ -144,5 +143,17 @@ public class RangeTest {
     void isAfter_OneSameBound_True() {
         Range lowerRange = new Range(5,10 );
         assertThat(testingRange.isAfter(lowerRange), is(true));
+    }
+
+    @Test
+    @DisplayName("method contains with containing value")
+    void contains_ContainingValue_True() {
+        assertThat(testingRange.contains(15), is(true));
+    }
+
+    @Test
+    @DisplayName("method contains with not containing value")
+    void contains_NotContainingValue_False() {
+        assertThat(testingRange.contains(30), is(false));
     }
 }
