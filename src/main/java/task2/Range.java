@@ -1,5 +1,6 @@
 package task2;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,7 +44,11 @@ public class Range implements IRange {
     }
 
     public List<Long> asList() {
-        return null;
+        List<Long> list = new ArrayList<>();
+        for (Long i = lowerBound; i < upperBound; i++) {
+            list.add(i);
+        }
+        return list;
     }
 
     public Iterator<Long> asIterator() {

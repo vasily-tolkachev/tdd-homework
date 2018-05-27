@@ -7,8 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 
 
 public class RangeTest {
@@ -22,51 +27,51 @@ public class RangeTest {
     @Test
     @DisplayName("isBefore with lower range")
     void isBefore_LowerRange_False() {
-        Range lowerRange = new Range(0,5 );
+        Range lowerRange = new Range(0, 5);
         assertThat(testingRange.isBefore(lowerRange), is(false));
     }
 
     @Test
     @DisplayName("isBefore with upper range")
     void isBefore_UpperRange_True() {
-        Range upperRange = new Range(20,30 );
+        Range upperRange = new Range(20, 30);
         assertThat(testingRange.isBefore(upperRange), is(true));
     }
 
     @Test
     @DisplayName("isBefore with partly lower range")
     void isBefore_PartlyLower_False() {
-        Range partlyLowerRange = new Range(0,15 );
+        Range partlyLowerRange = new Range(0, 15);
         assertThat(testingRange.isBefore(partlyLowerRange), is(false));
     }
 
     @Test
     @DisplayName("isBefore with partly upper range")
     void isBefore_PartlyUpper_False() {
-        Range partlyUpperRange = new Range(15,30 );
+        Range partlyUpperRange = new Range(15, 30);
         assertThat(testingRange.isBefore(partlyUpperRange), is(false));
     }
 
     @Test
     @DisplayName("isBefore with the same range")
     void isBefore_EqualRange_False() {
-        Range equalRange = new Range(10,20 );
+        Range equalRange = new Range(10, 20);
         assertThat(testingRange.isBefore(equalRange), is(false));
     }
 
     @Test
     @DisplayName("isBefore with lower negative range")
     void isBefore_NegativeLowerRange_False() {
-        Range negativeTestingRange = new Range(-20,-10 );
-        Range lowerNegativeRange = new Range(-40,-30 );
+        Range negativeTestingRange = new Range(-20, -10);
+        Range lowerNegativeRange = new Range(-40, -30);
         assertThat(negativeTestingRange.isBefore(lowerNegativeRange), is(false));
     }
 
     @Test
     @DisplayName("isBefore with upper negative range")
     void isBefore_NegativeUpperRange_True() {
-        Range negativeTestingRange = new Range(-20,-10 );
-        Range upperNegativeRange = new Range(-8,-5 );
+        Range negativeTestingRange = new Range(-20, -10);
+        Range upperNegativeRange = new Range(-8, -5);
         assertThat(negativeTestingRange.isBefore(upperNegativeRange), is(true));
     }
 
@@ -79,58 +84,58 @@ public class RangeTest {
     @Test
     @DisplayName("isBefore with one by one range")
     void isBefore_OneSameBound_True() {
-        Range oneSameBound = new Range(20,25);
+        Range oneSameBound = new Range(20, 25);
         assertThat(testingRange.isBefore(oneSameBound), is(true));
     }
 
     @Test
     @DisplayName("isAfter with lower range")
     void isAfter_LowerRange_True() {
-        Range lowerRange = new Range(0,5 );
+        Range lowerRange = new Range(0, 5);
         assertThat(testingRange.isAfter(lowerRange), is(true));
     }
 
     @Test
     @DisplayName("isAfter with upper range")
     void isAfter_UpperRange_False() {
-        Range upperRange = new Range(20,30 );
+        Range upperRange = new Range(20, 30);
         assertThat(testingRange.isAfter(upperRange), is(false));
     }
 
     @Test
     @DisplayName("isAfter with partly lower range")
     void isAfter_PartlyLower_False() {
-        Range partlyLowerRange = new Range(0,15 );
+        Range partlyLowerRange = new Range(0, 15);
         assertThat(testingRange.isAfter(partlyLowerRange), is(false));
     }
 
     @Test
     @DisplayName("isAfter with partly upper range")
     void isAfter_PartlyUpper_False() {
-        Range partlyUpperRange = new Range(15,30 );
+        Range partlyUpperRange = new Range(15, 30);
         assertThat(testingRange.isAfter(partlyUpperRange), is(false));
     }
 
     @Test
     @DisplayName("isAfter with the same range")
     void isAfter_EqualRange_False() {
-        Range equalRange = new Range(10,20 );
+        Range equalRange = new Range(10, 20);
         assertThat(testingRange.isAfter(equalRange), is(false));
     }
 
     @Test
     @DisplayName("isAfter with lower negative range")
     void isAfter_NegativeLowerRange_True() {
-        Range negativeTestingRange = new Range(-20,-10 );
-        Range lowerNegativeRange = new Range(-40,-30 );
+        Range negativeTestingRange = new Range(-20, -10);
+        Range lowerNegativeRange = new Range(-40, -30);
         assertThat(negativeTestingRange.isAfter(lowerNegativeRange), is(true));
     }
 
     @Test
     @DisplayName("isAfter with upper negative range")
     void isAfter_NegativeUpperRange_False() {
-        Range negativeTestingRange = new Range(-20,-10 );
-        Range upperNegativeRange = new Range(-8,-5 );
+        Range negativeTestingRange = new Range(-20, -10);
+        Range upperNegativeRange = new Range(-8, -5);
         assertThat(negativeTestingRange.isAfter(upperNegativeRange), is(false));
     }
 
@@ -143,7 +148,7 @@ public class RangeTest {
     @Test
     @DisplayName("isAfter with one by one range")
     void isAfter_OneSameBound_True() {
-        Range lowerRange = new Range(5,10 );
+        Range lowerRange = new Range(5, 10);
         assertThat(testingRange.isAfter(lowerRange), is(true));
     }
 
@@ -165,5 +170,29 @@ public class RangeTest {
     void isConcurrent_DifferentRanges(long lowerBound, long upperBound, boolean expectedResult) {
         Range anotherRange = new Range(lowerBound, upperBound);
         assertThat(testingRange.isConcurrent(anotherRange), is(expectedResult));
+    }
+
+    @Test
+    @DisplayName("isConcurrent throw exception if range is null")
+    void isConcurrent_Null_IllegalArgumentException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testingRange.isConcurrent(null));
+    }
+
+    @Test
+    @DisplayName("asList doesn't return null")
+    void asList_NotNull() {
+        assertThat(testingRange.asList(), notNullValue());
+    }
+
+    @Test
+    @DisplayName("asList check if number result items equal to expected number")
+    void asList_10Items() {
+        assertThat(testingRange.asList().size(), equalTo(10));
+    }
+
+    @Test
+    @DisplayName("asList returns list")
+    void asList_ListClass() {
+        assertThat(testingRange.asList(), isA(List.class));
     }
 }
