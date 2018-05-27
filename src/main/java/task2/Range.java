@@ -3,10 +3,25 @@ package task2;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Range implements IRange {
     private long lowerBound;
     private long upperBound;
+    long iteratorPosition;
+
+    private Iterator<Long> iterator = new Iterator<Long>() {
+        @Override
+        public boolean hasNext() {
+            return iteratorPosition < upperBound;
+        }
+
+        @Override
+        public Long next() {
+            if (iteratorPosition >  upperBound) throw new NoSuchElementException();
+            return iteratorPosition++;
+        }
+    };
 
     public Range(long lowerBound, long upperBound) {
         if (lowerBound > upperBound) {
@@ -52,6 +67,7 @@ public class Range implements IRange {
     }
 
     public Iterator<Long> asIterator() {
-        return null;
+        iteratorPosition = lowerBound;
+        return iterator;
     }
 }

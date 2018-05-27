@@ -9,10 +9,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.Is.isA;
 
@@ -219,5 +221,15 @@ public class RangeTest {
     @DisplayName("check asIterator next() method")
     void asIteratorNext_LowerBound() {
         assertThat(testingRange.asIterator().next(), is(testingRange.getLowerBound()));
+    }
+
+    @Test
+    @DisplayName("asIterator thows NoSuchElementException")
+    void asIterator_OutOfBounds_NoSuchElementException() {
+        Iterator<Long> iterator = testingRange.asIterator();
+        for (long i = testingRange.getLowerBound(); i <= testingRange.getUpperBound(); i++) {
+            iterator.next();
+        }
+        Assertions.assertThrows(NoSuchElementException.class, iterator::next);
     }
 }
