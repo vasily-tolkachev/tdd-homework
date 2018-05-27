@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.util.Iterator;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -194,5 +195,29 @@ public class RangeTest {
     @DisplayName("asList returns list")
     void asList_ListClass() {
         assertThat(testingRange.asList(), isA(List.class));
+    }
+
+    @Test
+    @DisplayName("asIterator return Iterator class")
+    void asIterator_IteratorClass() {
+        assertThat(testingRange.asIterator(), isA(Iterator.class));
+    }
+
+    @Test
+    @DisplayName("asIterator return not null value")
+    void asIterator_NotNull() {
+        assertThat(testingRange.asIterator(), notNullValue());
+    }
+
+    @Test
+    @DisplayName("asIterator hasNext() returns true")
+    void asIteratorHasNext_True() {
+        assertThat(testingRange.asIterator().hasNext(), is(true));
+    }
+
+    @Test
+    @DisplayName("check asIterator next() method")
+    void asIteratorNext_LowerBound() {
+        assertThat(testingRange.asIterator().next(), is(testingRange.getLowerBound()));
     }
 }
