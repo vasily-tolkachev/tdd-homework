@@ -8,8 +8,13 @@ public class Range implements IRange {
     private long upperBound;
 
     public Range(int lowerBound, int upperBound) {
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
+        if (lowerBound > upperBound) {
+            this.lowerBound = upperBound;
+            this.upperBound = lowerBound;
+        } else {
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
+        }
     }
 
     public long getLowerBound() {
@@ -22,7 +27,7 @@ public class Range implements IRange {
 
     public boolean isBefore(Range otherRange) {
         if (otherRange == null) throw new IllegalArgumentException();
-        return  upperBound <= otherRange.getLowerBound();
+        return upperBound <= otherRange.getLowerBound();
     }
 
     public boolean isAfter(Range otherRange) {
